@@ -13,3 +13,4 @@
 #F.	La liste des biens qui n’ont jamais été loués
 
 #G.	La somme des loyers du mois en cours
+ 

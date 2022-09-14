@@ -4,7 +4,7 @@ insert into ville (libelle) values
 ('m''diq'),
 ('tanger'),
 ('fnidaq');
-
+ 
 insert into quartier (libelle,ville_id) values 
 ('touilaa',1), 
 ('saniat rmel',1),
