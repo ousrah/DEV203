@@ -1,4 +1,4 @@
-use location_dev203;
+
 
 #A.	La liste des bien de type ‘villa’
 #methode 1
@@ -66,11 +66,39 @@ disponibles actuellement
 dont le loyer est inférieur à 2000 DH 
 triés du moins chère au plus chère
 
-
-
+select * from bien 
+where reference not in (
+				select distinct bien_reference 
+                from contrat
+				where date_entree<=current_date 
+						and (date_sortie>=current_date or date_sortie is null)
+					)
+and loyer < 2000
+and  type_bien_id in (select id from type_bien where libelle = 'appartement')
+and  quartier_id in (select id
+					from quartier
+                    where ville_id in (select id 
+										from ville
+										where libelle = 'martil')
+					)
+order by loyer asc;
 
 #F.	La liste des biens qui n’ont jamais été loués
+#methode1
+select * from bien where reference not in (
+select distinct bien_reference from contrat)
+
+#methode2
+select * from bien b
+left join contrat c on b.reference = c.bien_reference
+where bien_reference is null
+
+
 
 #G.	La somme des loyers du mois en cours
- 
+ select sum(loyer)
+                from contrat
+				where date_entree<=current_date 
+						and (date_sortie>=current_date or date_sortie is null)
+				
  
