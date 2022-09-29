@@ -230,6 +230,25 @@ select somme(3,5) as addition;
      
      delimiter ;
       select get_day_name(2)  
+
+#equation 1er degrès
+Ax+B=0
+A=0 et B=0 solution toute valeur de R
+A=0 et B!=0  Solution  impossible
+A!=0  x=-B/A
+
+#equation 2ème degrès
+Ax²+Bx+C=0
+a=0 et b=0 et c=0    R	
+a=0 et b=0 et c!=0   impossible
+a=0 et b!=0           x=-c/b
+a!=0  delta=pow(b,2)-(4*a*c)
+	delta = 0 x1=x2=-b/2a
+	delta < 0  impossible de R
+	delta > 0 x1 = -b-sqrt(delta)/2a
+				x2 = -b+sqrt(delta)/2a
+        
+        
         
 	#Les boucles
 		#while
