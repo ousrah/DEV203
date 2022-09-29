@@ -237,6 +237,29 @@ A=0 et B=0 solution toute valeur de R
 A=0 et B!=0  Solution  impossible
 A!=0  x=-B/A
 
+drop function if exists eq1d;
+delimiter $$
+create function eq1d(a int, b int)
+returns varchar(50)
+deterministic
+begin	
+	declare result varchar(50);
+    if a=0  then
+		if b=0 then
+			set result = "R";
+		else  
+			set result = "impossible";
+        end if;
+    else
+		set result = concat("x=",round(-b/a,2));
+    end if;
+    return result;
+end$$
+delimiter ;
+
+select eq1d(2,3);
+
+
 #equation 2ème degrès
 Ax²+Bx+C=0
 a=0 et b=0 et c=0    R	
@@ -248,12 +271,111 @@ a!=0  delta=pow(b,2)-(4*a*c)
 	delta > 0 x1 = -b-sqrt(delta)/2a
 				x2 = -b+sqrt(delta)/2a
         
-        
+ 
+ 
+drop function if exists eq2d;
+delimiter $$
+create function eq2d(a int, b int, c int)
+returns varchar(50)
+deterministic
+begin	
+	declare result varchar(50);
+    declare delta bigint;
+    if a=0  then
+		if b=0 then
+			if c=0 then
+				set result = "R";
+			else  
+				set result = "impossible";
+			end if;
+		else
+			set result = concat("x=",round(-c/b,2));
+        end if;
+    else
+		set delta = (b*b)-(4*a*c);
+        case
+			when delta <0 then set result="impossible dans R";
+            when delta =0 then set result = concat("x1=x2=",round(-b/(2*a),2));
+            else set result = concat("x1=",round((-b-sqrt(delta))/(2*a),2), "    x2=",round((-b+sqrt(delta))/(2*a),2)  );
+        end case;
+    end if;
+    return result;
+end$$
+delimiter ;
+
+select eq2d(2,6,2);
+
+
         
 	#Les boucles
 		#while
+        
+    drop function if exists somme;
+    delimiter $$
+    create function somme(n int)
+    returns bigint
+    deterministic
+    begin
+		declare s bigint default 0;
+        declare i int default 1;
+        while (i<=n) do
+			set s=s+i;
+			set i = i+1;
+        end while;
+		return s;
+    end$$
+    delimiter ;
+      
+      select somme(4);
+        
+        
+        
 		#repeat
+        
+  
+    drop function if exists somme;
+    delimiter $$
+    create function somme(n int)
+    returns bigint
+    deterministic
+    begin
+		declare s bigint default 0;
+        declare i int default 1;
+        repeat
+			set s=s+i;
+			set i = i+1;
+        until i>n end repeat;
+		return s;
+    end$$
+    delimiter ;
+      
+      select somme(3);    
+    
+    
 		#loop
+    
+    
+    drop function if exists somme;
+    delimiter $$
+    create function somme(n int)
+    returns bigint
+    deterministic
+    begin
+		declare s bigint default 0;
+        declare i int default 1;
+        boucle1: loop
+			set s=s+i;
+			set i = i+1;
+            if i<=n then
+				iterate boucle1;
+            end if;
+            leave boucle1;
+        end loop boucle1;
+		return s;
+    end$$
+    delimiter ;
+      
+      select somme(4);    
     
 #Les fonctions
 
