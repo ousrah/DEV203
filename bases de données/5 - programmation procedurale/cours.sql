@@ -348,13 +348,12 @@ select eq2d(2,6,2);
 		return s;
     end$$
     delimiter ;
-      
-      select somme(3);    
+    select somme(3);    
     
     
 		#loop
     
-    
+
     drop function if exists somme;
     delimiter $$
     create function somme(n int)
