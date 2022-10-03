@@ -375,7 +375,118 @@ select eq2d(2,6,2);
     delimiter ;
       
       select somme(4);    
-    
-#Les fonctions
 
-#Les procedures
+
+#factoriel
+ 
+drop function if exists factoriel;
+delimiter $$
+create function factoriel(n int)
+    returns varchar(50)
+    no sql
+begin
+		declare i int default 1;
+        declare result bigint default 1;	
+		if n<0 then
+			return "impossible";
+		end if;
+        repeat
+			set result=result*i;
+            set i=i+1;
+        until i>n end repeat;
+		return result;
+end $$
+delimiter ;
+select factoriel(-4)  ;
+  
+    
+#fonction recursive
+
+ drop function if exists factoriel;
+    delimiter $$
+create function factoriel(n int)
+    returns bigint
+    deterministic
+begin
+        declare result bigint default 1;
+		if (n>2) then 
+			set result = n * factoriel(n-1);
+        end if;
+		return result;
+end $$
+delimiter ;
+
+   select factoriel(5)  ;
+
+
+drop procedure if exists ps_calculs;
+delimiter $$
+create procedure ps_calculs(in a int, in b int, inout c int, inout m int)
+begin
+    select c;
+	set c = a+b;
+    set m=a*b;
+end$$
+delimiter ;
+
+set @a=3;
+set @b=5;
+call ps_calculs(@a,@b,@c,@m);
+select @c,@m;
+
+set @a=10;
+
+select @c;
+
+drop procedure if exists counter;
+delimiter $$
+create procedure counter(in i int)
+begin
+	set i=i+1;
+end$$
+delimiter ;
+
+set @c=55;
+call counter(@c);
+select @c;
+
+
+    
+    #procedure recursive
+
+ drop procedure if exists ps_factoriel;
+    delimiter $$
+    create procedure ps_factoriel(inout n bigint)
+    begin
+        declare result bigint default 1;
+        declare x bigint default 1;
+		if n>2 then
+            set x=n-1;
+		    call ps_factoriel(x);
+		end if;
+		set n =  n*x;
+    end $$
+    delimiter ;
+   
+    set max_sp_recursion_depth =5;
+
+    set @n = 5;
+	call ps_factoriel(@n)  ;
+    select @n;  
+    
+    
+    
+    
+    select year(current_date());
+select month(current_date());
+select date_format(current_date, '%D of %M of %Y ');
+
+
+select abs(datediff(current_date(), "2022/12/31 23:59:59"));
+
+    
+    
+select timestampdiff(second, current_date(), "2022/12/31 23:59:59");
+
+    
+    
