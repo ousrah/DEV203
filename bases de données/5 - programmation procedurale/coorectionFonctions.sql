@@ -96,3 +96,15 @@ end$$
 delimiter ;
 
 select EX3_Q1(3)
+update pilote set datedebut = "1997-11-08" where numpilote = 3
+
+use vols2018
+
+
+select numpilote into r from pilote where 
+		numpilote in (
+		select numpil from vol where numav = 2)
+		and 
+		datedebut in (
+			select min(datedebut) from pilote where numpilote in (
+			select numpil from vol where numav = 2)) limit 1
