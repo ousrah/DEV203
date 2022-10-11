@@ -484,7 +484,7 @@ select date_format(current_date, '%D of %M of %Y ');
 
 select abs(datediff(current_date(), "2022/12/31 23:59:59"));
 
-    
+    prompt 'a';
     
 select timestampdiff(second, current_date(), "2022/12/31 23:59:59");
 
