@@ -48,3 +48,22 @@ select * from bankaccounts;
 SHOW VARIABLES LIKE 'AUTOCOMMIT';
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1
