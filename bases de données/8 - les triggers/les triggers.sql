@@ -67,4 +67,27 @@ alter table produit add check (stock >=0);
 
 #creer le trigger qui ajoute la quantité du produit dans le stock lorsqu'on supprimer un enregistrement de la table ligne
 
+drop trigger if exists t2;
+delimiter $$
+create trigger t2 after delete on ligne for each row
+begin
+	update produit set stock = stock+old.qte where id = old.produit_id;
+end$$
+delimiter ;
+
+delete from ligne where commande_id = 2 and produit_id = 1;
+
+
 #creer le trigger qui modifie la quantité du produit dans le stock lorsqu'on modifie un enregistrement de la table ligne
+
+drop trigger if exists t3;
+delimiter $$
+create trigger t3 after update on ligne for each row
+begin
+	update produit set stock = stock+(old.qte-new.qte) where id = old.produit_id;
+end$$
+delimiter ;
+select * from ligne
+select * from produit
+update ligne set qte = 1 where commande_id = 3 and produit_id = 1;
+delete from ligne;
