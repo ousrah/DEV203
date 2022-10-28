@@ -50,11 +50,14 @@ Interrogation (selection)
 ----------------------
 
 db.restaurants.find( { "borough" : "Brooklyn" } )
+
 db.restaurants.find( { "borough" : "Brooklyn" } ).count()
+
 db.restaurants.find(
     { "borough" : "Brooklyn",
       "cuisine" : "Italian" }
 )
+
 db.restaurants.find(
     { "borough" : "Brooklyn",
       "cuisine" : "Italian",
