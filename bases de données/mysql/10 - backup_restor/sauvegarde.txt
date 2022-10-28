@@ -1,0 +1,14 @@
+pour faire le backup : 
+mysqldump -h localhost -P 3308 -u root -p ecole > d:\saveecole.sql
+
+
+pour faire le Restore :
+
+methode 1 : 
+entrez dans mysql :
+	mysql -h localhost -P 3308 -u root -p
+	use ecole2
+	source d:\saveecole.sql
+
+methode 2 : 
+	mysql -h localhost -P 3308 -u root -p ecole2 < d:\saveecole.sql
