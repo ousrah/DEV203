@@ -1,0 +1,110 @@
+db.movies.aggregate( [
+{$group:{"_id":null}},
+{$set:{"a":{$floor:{$multiply:[{$rand:{}},20]}}}},
+ {$project:{a:1}}
+])
+
+
+
+
+
+1.	Afficher tous les films
+
+db.movies.find()
+2.	Afficher les films qui ont un imdb rating supérieur à 7
+
+db.movies.find({"imdb.rating":{"$gt":7}})
+
+
+3.	Afficher les films qui durent plus que 2 heures
+
+db.movies.find({"type":"movie","runtime":{"$gt":120}})
+
+4.	le nombre des films par catégorie de « will smith » avant 2000 triès par catégorie
+db.movies.aggregate([
+{$unwind :"$genres"},
+{$match :{cast :"Will Smith" ,year:{$lt :2000}}},
+{$group :{_id :"$genres" ,nb :{$sum : 1}}},
+{$sort :{"_id":1}}
+])
+
+5.	Afficher la liste des différents acteurs triès par nom
+
+
+db.movies.distinct("cast");
+
+
+6.	Afficher la liste des pays des différents films
+db.movies.distinct("countries",{"type":"movie"});
+
+
+7.	La liste des noms des films du director « Steven Spielberg» 
+
+db.movies.find({"directors":"Steven Spielberg"},{"_id":0,"title":1})
+
+
+8.	La liste des noms des films qui  contiennent le mot « avatar »
+
+db.movies.find({"title":{"$regex":/avatar/i}},{"_id":0,"title":1})
+
+db.movies.find({"title":/avatar/i},{"_id":0,"title":1})
+
+
+9.	le nombre des films qui ont un rating imdb supérieur ou égale à  7
+db.movies.find({"imdb.rating": {$gte: 7}}).count()
+db.movies.count({"imdb.rating": {$gte: 7}})
+db.movies.countDocuments({"imdb.rating": {$gte: 7}})
+
+
+10.	La liste des films qui n’ont pas de rating
+db.movies.insertOne({"_id":"007","title":"test"})
+
+db.movies.find({"imdb.rating": {$exists: false}},{"_id":0,"title":1})
+
+11.	la moyenne des votes imdb par genre par pays
+
+db.movies.aggregate([
+{$unwind:"$genres"},
+{$unwind:"$countries"},
+{$group:{_id:{"genre":"$genres","pays":"$countries"},"moyvotes":{$avg:"$imdb.votes"}}},
+{$sort:{"_id":1}}
+])
+
+12.	le nombre des films par acteurs par ordre décroissant sur le nombre
+db.movies.aggregate([
+{$unwind:"$cast"},
+{$group:{_id:"$cast","NombreFilm":{$sum:1}}},
+{$sort:{"NombreFilm":-1}}
+])
+
+
+
+
+13.	les films dont le titre commence par « the » « utiliser « $regex »
+
+db.movies.find({"title":{"$regex":"^The"}}, {"_id":0,"title":1})
+
+
+14.	le rating imdb moyenne des films de  « Steven Spielberg»
+
+varMatch = {$match : {"directors":"Steven Spielberg"}}
+varGroup = {$group : {"_id":null , "imdb_moyen_rating": {$avg :"$imdb.rating"}}}
+varProject = {$project : { "imdb_moyen_rating": {$round:["$imdb_moyen_rating",2]}}}
+db.movies.aggregate([varMatch , varGroup, varProject])
+
+
+15.	le nombre des ecrivains par film de « USA »
+db.movies.aggregate([
+{$unwind:"$writers"},
+{$match:{"countries":"USA"}},
+{$group:{_id:"$writers","NombreEcr":{$sum:1}}}
+])
+
+
+
+
+16.	Les acteurs qui ont le plus grand rating imdb
+17.	Le meilleur film par année
+18.	La moyenne des durées des films par genre
+19.	Donnez les cinq meilleurs directeurs de l’année 2000
+20.	L’année dans laquelle on a produit le plus grand nombre de films
